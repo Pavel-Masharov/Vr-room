@@ -12,7 +12,10 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioClip _audioClip;
     private bool _canShot = true;
 
-    public async void Shot(UnityAction actionHit)
+    private WaitForSeconds _timeReset = new WaitForSeconds(0.4f);
+    private Coroutine _coroutineResetTimeShot;
+
+    public void Shot(UnityAction actionHit)
     {
         if (!_canShot)
             return;
@@ -30,7 +33,12 @@ public class Gun : MonoBehaviour
             }
         }
 
-        await Task.Delay(400);
+        _coroutineResetTimeShot = StartCoroutine(ResetTimeShot());
+    }
+
+    private IEnumerator ResetTimeShot()
+    {
+        yield return _timeReset;
         _particleFire.Stop();
         _canShot = true;
     }
