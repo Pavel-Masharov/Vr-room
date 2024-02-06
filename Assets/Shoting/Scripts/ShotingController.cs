@@ -77,7 +77,7 @@ public class ShotingController : MonoBehaviour
         _rightHand.inputDevice.IsPressed(_buttonTrigger, out pressedRight);
         if (pressedRight)
         {
-            _rightHand.SendHapticImpulse(1, 0.5f);
+            _rightHand.SendHapticImpulse(1, 0.25f);
             _canvasDebuger.SetTextDebug("Shot");
             _rightHand.model.GetComponent<Gun>().Shot(() => _canvasDebuger.SetTextDebug("Hit"));
         }
@@ -86,7 +86,7 @@ public class ShotingController : MonoBehaviour
         _leftHand.inputDevice.IsPressed(_buttonTrigger, out pressedLeft);
         if (pressedLeft)
         {
-            _leftHand.SendHapticImpulse(1, 0.5f);
+            _leftHand.SendHapticImpulse(1, 0.25f);
             _canvasDebuger.SetTextDebug("Shot");
             _leftHand.model.GetComponent<Gun>().Shot(() => _canvasDebuger.SetTextDebug("Hit"));
         }
