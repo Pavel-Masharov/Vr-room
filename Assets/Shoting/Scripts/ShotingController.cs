@@ -6,13 +6,13 @@ using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 public class ShotingController : MonoBehaviour
 {
-    //[SerializeField] private XRRayInteractor _leftHandInteractor;
-    //[SerializeField] private ActionBasedController _leftbasedController;
 
     [SerializeField] private CanvasDebuger _canvasDebuger;
 
-    public XRController _rightHand;
-    public XRController _leftHand;
+    [SerializeField] public XRController _rightHand;
+    [SerializeField] public XRController _leftHand;
+
+    //[SerializeField] XRRayInteractor
 
     public InputHelpers.Button _buttonTrigger;
     public InputHelpers.Button _buttonGrip;
@@ -39,17 +39,8 @@ public class ShotingController : MonoBehaviour
 
     void Update()
     {
-        CheckClickButton();
-        //bool pressed;
-        //_rightHand.inputDevice.IsPressed(_buttonTrigger, out pressed);
-        //if (pressed)
-        //{
-        //    string message = "Hello - " + _buttonTrigger;
-        //    _canvasDebuger.SetTextDebug(message);
-        //}
-        // xr.get
-
-
+        //CheckClickButton();     
+        CheckClickTriggerButton();
     }
 
 
@@ -79,4 +70,26 @@ public class ShotingController : MonoBehaviour
             }
         }
     }
+
+    private void CheckClickTriggerButton()
+    {
+        bool pressedRight;
+        _rightHand.inputDevice.IsPressed(_buttonTrigger, out pressedRight);
+        if (pressedRight)
+        {        
+            _canvasDebuger.SetTextDebug("Shot");
+            _rightHand.model.GetComponent<Gun>().Shot(() => _canvasDebuger.SetTextDebug("Hit"));
+        }
+
+        bool pressedLeft;
+        _leftHand.inputDevice.IsPressed(_trigger, out pressedLeft);
+        if (pressedLeft)
+        {
+            _canvasDebuger.SetTextDebug("Shot");
+            _leftHand.model.GetComponent<Gun>().Shot(() => _canvasDebuger.SetTextDebug("Hit"));
+        }
+
+    }
+
+
 }
