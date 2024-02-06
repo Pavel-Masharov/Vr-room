@@ -17,6 +17,7 @@ public class Gun : MonoBehaviour
         if (!_canShot)
             return;
 
+        _canShot = false;
         _audioSource.PlayOneShot(_audioClip);
         _particleFire.Play();
          Ray ray = new(_modelGun.transform.position, _modelGun.transform.forward);
@@ -25,6 +26,7 @@ public class Gun : MonoBehaviour
             if(hit.collider.gameObject.GetComponent<Target>())
             {
                 actionHit?.Invoke();
+                hit.collider.gameObject.GetComponent<Target>().Hit();
             }
         }
 

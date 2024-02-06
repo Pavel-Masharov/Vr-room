@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody _rigidbody;
+    public void Hit()
     {
-        
-    }
+        if(!_rigidbody)
+            _rigidbody = gameObject.AddComponent<Rigidbody>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _rigidbody.AddForce(Vector3.forward, ForceMode.Impulse);
     }
 }
