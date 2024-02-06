@@ -10,19 +10,25 @@ public class Gun : MonoBehaviour
     [SerializeField] private ParticleSystem _particleFire;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _audioClip;
+
+    [SerializeField] private ParticleSystem prefabParticleFire;
+    [SerializeField] private Transform _positionParticle;
     private bool _canShot = true;
 
     private WaitForSeconds _timeReset = new WaitForSeconds(0.4f);
     private Coroutine _coroutineResetTimeShot;
 
-    public void Shot(UnityAction actionHit)
+    public async void Shot(UnityAction actionHit)
     {
         if (!_canShot)
             return;
 
         _canShot = false;
-        _audioSource.PlayOneShot(_audioClip);
-        _particleFire.Play();
+        _audioSource.Play();
+        //_particleFire.Play();
+        var particle = Instantiate(prefabParticleFire, transform);
+
+        particle.Play();
          Ray ray = new(_modelGun.transform.position, _modelGun.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {            
@@ -33,7 +39,11 @@ public class Gun : MonoBehaviour
             }
         }
 
-        _coroutineResetTimeShot = StartCoroutine(ResetTimeShot());
+        await Task.Delay(300);
+       // _particleFire.Stop();
+        _canShot = true;
+
+        Destroy(particle.gameObject);    
     }
 
     private IEnumerator ResetTimeShot()
