@@ -11,12 +11,33 @@ public class Gun : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _audioClip;
 
+    [SerializeField] private LineRenderer _lineRenderer;
+
     [SerializeField] private ParticleSystem prefabParticleFire;
     [SerializeField] private Transform _positionParticle;
     private bool _canShot = true;
 
     private WaitForSeconds _timeReset = new WaitForSeconds(0.4f);
     private Coroutine _coroutineResetTimeShot;
+
+
+
+    private void Update()
+    {
+        UpdateLineRenderer();
+    }
+
+    private void UpdateLineRenderer()
+    {
+        _lineRenderer.SetPosition(0, transform.position);
+
+        Vector3 forward = transform.forward;
+        Vector3 position = transform.position;
+        float distance = 10f;
+        Vector3 targetPoint = position + forward * distance;
+
+        _lineRenderer.SetPosition(1, targetPoint);
+    }
 
     public async void Shot(UnityAction actionHit)
     {
@@ -29,7 +50,7 @@ public class Gun : MonoBehaviour
         var particle = Instantiate(prefabParticleFire, transform);
 
         particle.Play();
-         Ray ray = new(_modelGun.transform.position, _modelGun.transform.forward);
+        Ray ray = new(_modelGun.transform.position, _modelGun.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {            
             if(hit.collider.gameObject.GetComponent<Target>())
