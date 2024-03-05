@@ -39,8 +39,8 @@ public class ShotingController : MonoBehaviour
 
     void Update()
     {
-        //CheckClickButton();     
-        CheckClickTriggerButton();
+        if(StateController.typeState == TypeState.Shot)
+            CheckClickTriggerButton();
     }
 
 
